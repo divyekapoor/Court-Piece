@@ -72,5 +72,5 @@ class Card(object):
         
     def is_face(self):
         """Is the card a face card?"""
-        return self.index >= Card.JACK_INDEX
+        return self.index >= Card.JACK_INDEX and self.index <= Card.KING_INDEX
         
