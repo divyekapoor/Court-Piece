@@ -65,7 +65,7 @@ class Card(object):
         
     def __unicode__(self):
         """Return a unicode string representation of the card. Use pretty symbols for suits"""
-        return u"%s %s" % (self.value, self.unicode_suit)
+        return u"%s%s" % (self.value, self.unicode_suit)
         
     def is_face(self):
         """Is the card a face card?"""

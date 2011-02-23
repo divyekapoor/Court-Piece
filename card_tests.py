@@ -57,8 +57,8 @@ class CardTests(unittest.TestCase):
         normal_card = Card(8, "hearts")
         face_card = Card(11, "diamonds")
         
-        self.assertEqual(unicode(normal_card), u'8 \u2665')
-        self.assertEqual(unicode(face_card), u'J \u2666')
+        self.assertEqual(unicode(normal_card), u'8\u2665')
+        self.assertEqual(unicode(face_card), u'J\u2666')
         
     def tearDown(self):
         self.value = None
