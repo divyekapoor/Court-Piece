@@ -5,6 +5,9 @@ import os
 
 
 class Card(object):
+	"""Represents a card from the international deck of cards. A, 2 - 10, J, Q, K
+	having one of 4 suits - spades, clubs, hearts, diamonds.
+	"""
     # Public exposed array
     suits = ["spades", "clubs", "hearts", "diamonds"]
 
