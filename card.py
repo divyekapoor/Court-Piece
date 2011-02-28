@@ -26,6 +26,20 @@ class Card(object):
         self.value = value
         self.suit = suit
 
+    def __repr__(self):
+        """Representation of the internal Card state"""
+        return 'Card(' + repr(self.value) + ', ' + repr(self.suit) + ')'
+
+    def __eq__(self, other):
+        """Equality Testing"""
+        return isinstance(other, Card) and other.value == self.value and other.suit == self.suit
+        
+    def __lt__(self, other):
+        """Comparison between cards of the same suit"""
+        if other is None or self.suit != other.suit:
+            raise ValueError("Two cards of different suits cannot be compared.")
+        return self.index < other.index
+            
     @property
     def index(self):
         """Returns an integer representation of the card value. Range: 1-13.
@@ -39,7 +53,14 @@ class Card(object):
         
     @value.setter
     def value(self,value_):
-        """Setter for the card value"""
+        """Setter for the card value. Handles strings, integers."""
+        if isinstance(value_, basestring):
+            value_ = value_.upper()
+            if value_ not in Card._face:
+                value_ = int(value_)
+            else:
+                value_ = Card._face.index(value_) + Card.JACK_INDEX
+        
         if value_ <= 0 or value_ > Card.KING_INDEX:
             raise ValueError("The value %r is out of bounds for a deck of cards." % value_)
         self._value = value_

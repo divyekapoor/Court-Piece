@@ -25,6 +25,11 @@ class CardTests(unittest.TestCase):
         self.assertEqual(card.suit, self.suit)
         self.assertEqual(card.index, self.value)
         
+    def test_repr(self):
+        card = Card(self.value, self.suit)
+        repr_card = eval(repr(card))
+        self.assertEqual(repr_card, card)
+        
         
     def test_init_invalid(self):
         invalid_suits = [self.suit, None, "spade", "diamond", "club", "heart", "abracadabra"]
@@ -34,6 +39,7 @@ class CardTests(unittest.TestCase):
         for invalid_suit, invalid_value in itertools.product(invalid_suits, invalid_values):
             if not (invalid_suit == self.suit and invalid_value == self.value):
                 self.assertRaises(ValueError, Card, invalid_value, invalid_suit)
+
 
     def test_face_card(self):
         face_card = Card(self.random.randint(Card.JACK_INDEX,Card.KING_INDEX), self.random.choice(Card.suits))
@@ -60,6 +66,55 @@ class CardTests(unittest.TestCase):
         self.assertEqual(unicode(normal_card), u'8\u2665')
         self.assertEqual(unicode(face_card), u'J\u2666')
         
+    def test_value_setter(self):
+        normal_card = Card(6, "hearts")
+        self.assertEqual(normal_card.value, '6')
+        self.assertEqual(normal_card.index, 6)
+        normal_card.value = 10
+        self.assertEqual(normal_card.value, '10')
+        self.assertEqual(normal_card.index, 10)
+        normal_card.value = 'J'
+        self.assertEqual(normal_card.value, 'J')
+        self.assertEqual(normal_card.index, Card.JACK_INDEX)
+        normal_card.value = '4'
+        self.assertEqual(normal_card.value, '4')
+        self.assertEqual(normal_card.index, 4)
+    
+    def test_value_setter_invalid(self):
+        invalid_values = ['Kings', 'Jack', 'Queen', '0', -1, 0, 14, random.randint(15,100), random.randint(-100, -1)]
+        for value in invalid_values:
+            card = Card(3, "diamonds")
+            try:
+                card.value = value
+                self.assert_(False)
+            except ValueError as e:
+                self.assert_(isinstance(e, ValueError))
+
+    def test_eq(self):
+        card1 = Card('6', 'hearts')
+        card2 = Card('J', 'hearts')
+        self.assertNotEqual(card1, card2)
+        self.assertEqual(card1, card1)
+        self.assertEqual(card1, Card(6, 'hearts'))
+        
+    def test_lt(self):
+        card1 = Card('2', 'hearts')
+        card2 = Card(2, 'spades')
+        cards = [None, card2]
+        for card in cards:
+            try:
+                card1 < card
+                self.assert_(False) # This line should never be reached
+            except ValueError as e:
+                self.assert_(isinstance(e, ValueError))
+                
+        for suit in Card.suits:
+            self.assert_(Card(2, suit) < Card(3, suit))
+            self.assert_(Card('J', suit) < Card('Q', suit))
+            self.assert_(Card('Q', suit) < Card('K', suit))
+            self.assert_(Card('J', suit) < Card('K', suit))
+        
+            
     def tearDown(self):
         self.value = None
         self.suit = None
