@@ -43,3 +43,4 @@ class Player(object):
 class CourtPiece(object):
 	
 	def __init__(self):
+	    pass
