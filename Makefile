@@ -6,11 +6,14 @@ coverage: test
 	@echo -----------------------------------------
 	python coverage.py .coverage -r card.py
 
-test: card.py card_tests.py
+test: card.py card_tests.py card_tests.pyc
 	@echo ------------------------------------------
 	@echo      Tests
 	@echo ------------------------------------------
 	python coverage.py .coverage -x ./card_tests.py
 
 	
-.PHONY: all test coverage
+clean:
+	rm *,cover *.pyc *.pyo
+	
+.PHONY: all test coverage clean
